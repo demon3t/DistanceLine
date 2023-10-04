@@ -1,0 +1,295 @@
+﻿<hc:Window x:Class="DistanceLine.Views.Windows.MainWindow"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		   xmlns:hc="https://handyorg.github.io/handycontrol"
+		   xmlns:fa="http://schemas.fontawesome.com/icons/"
+		   xmlns:dc="clr-namespace:DistanceLine.ViewModels.Windows"
+           xmlns:local="clr-namespace:DistanceLine"
+           mc:Ignorable="d"
+           Title="Distance-Line" Height="450" Width="800">
+    <hc:Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenFileCommand}"/>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SafeFileCommand}"/>
+        <KeyBinding Modifiers="Shift" Key="S" Command="{Binding SafeFileAsCommand}"/>
+        <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding ComplexCommand}"/>
+        <KeyBinding Key="F5" Command="{Binding UpdateCommand}"/>
+        <KeyBinding Key="F10" Command="{Binding ThemeChangeCommand}"/>
+    </hc:Window.InputBindings>
+
+    <hc:Window.NonClientAreaContent>
+        <DockPanel HorizontalAlignment="Left"
+				   Margin="20,0">
+            <Menu Style="{StaticResource MenuBaseStyle}">
+                <MenuItem Header="Файл">
+
+                    <MenuItem Header="Открыть"
+							  Command="{Binding OpenFileCommand}"
+							  InputGestureText="Ctrl+O">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="Regular_File"
+											 Foreground="{DynamicResource PrimaryBrush}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Сохранить"
+							  Command="{Binding SafeFileCommand}"
+							  InputGestureText="Ctrl+S">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="Regular_Save"
+											 Foreground="{DynamicResource PrimaryBrush}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Сохранить как.."
+							  Command="{Binding SafeFileAsCommand}"
+							  InputGestureText="Shift+S">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="Solid_Save"
+											 Foreground="{DynamicResource PrimaryBrush}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                </MenuItem>
+
+                <MenuItem Header="О приложении">
+
+                    <MenuItem Header="Настройки"
+							  Command="{Binding OpenSettingsCommand}">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="Solid_Cogs"
+											 Foreground="{DynamicResource PrimaryBrush}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Справка"
+							  Command="{Binding OpenReferenceCommand}">
+                        <MenuItem.Icon>
+                            <fa:ImageAwesome Icon="Solid_Exclamation"
+											 Foreground="{DynamicResource PrimaryBrush}"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+    </hc:Window.NonClientAreaContent>
+
+    <hc:Window.DataContext>
+        <dc:MainWindowViewModel/>
+    </hc:Window.DataContext>
+
+    <hc:Window.Resources>
+        <Style x:Key="Border_One" TargetType="Border">
+            <Setter Property="Margin" Value="2 1"/>
+            <Setter Property="Background" Value="{StaticResource DarkDefaultBrush}"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+
+        <Style x:Key="Border_Two" TargetType="Border">
+            <Setter Property="Margin" Value="2 1"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+
+        <Style x:Key="Label_One" TargetType="Label">
+            <Setter Property="Margin" Value="5 0 0 0"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+        </Style>
+
+        <Style x:Key="NumericUpDown_One" TargetType="hc:NumericUpDown">
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+        </Style>
+    </hc:Window.Resources>
+
+    <DockPanel>
+        <Expander DockPanel.Dock="Left"
+                  Header="Исходные данные"
+				  Width="Auto"
+				  TextBlock.TextAlignment="Center"
+				  HorizontalContentAlignment="Right"
+				  Style="{StaticResource Expander.Small}"
+				  Background="{DynamicResource SecondaryRegionBrush}"
+				  Foreground="{DynamicResource DarkPrimaryBrush}"
+				  ExpandDirection="Left"
+				  VerticalAlignment="Stretch"
+				  IsExpanded="True">
+
+
+            <StackPanel Orientation="Vertical">
+                <Label Background="{DynamicResource PrimaryBrush}"
+					   Foreground="{DynamicResource TextIconBrush}"
+					   HorizontalAlignment="Stretch"
+                       Content="Исходные данные"/>
+
+                <Border Style="{StaticResource Border_Two}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+							   DockPanel.Dock="Left"
+                               Content="Номинальное напряжение, кВ"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.NominalVoltage}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_One}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+							   DockPanel.Dock="Left"
+                               Content="Длина линии, км"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.LineLength}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_Two}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+							   DockPanel.Dock="Left"
+                               Content="Расщеплённых проводов"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.NumberSplitWires}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_One}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+                               Content="Сечение стали, мм²"
+							   DockPanel.Dock="Left"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.SteelSection}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_Two}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+							   DockPanel.Dock="Left"
+                               Content="Сечение алюминия, мм²"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.AluminumSection}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_One}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+							   DockPanel.Dock="Left"
+                               Content="Диаметр провода, мм"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.DiameterWire}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_Two}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+							   DockPanel.Dock="Left"
+                               Content="Активное сопротивление, Ом"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.ActiveResistance}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_One}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+                               Content="Расстояние между фазами, м"
+							   DockPanel.Dock="Left"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.DistanceBetweenPhases}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_Two}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+                               Content="Расстояние между расщеплёнными проводами, см"
+							   DockPanel.Dock="Left"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.DistanceBetweenSplitWires}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_One}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+                               Content="K1"
+							   DockPanel.Dock="Left"
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.K1}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+                <Border Style="{StaticResource Border_Two}">
+                    <DockPanel>
+                        <Label Style="{StaticResource Label_One}"
+                               Content="K2"
+							   DockPanel.Dock="Left" 
+							   Background="Transparent"/>
+
+                        <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
+										  Width="100" Value="{Binding InputData.K2}"
+										  Minimum="0" HorizontalAlignment="Right"
+										  DecimalPlaces="5" ValueFormat="G9"/>
+                    </DockPanel>
+                </Border>
+
+            </StackPanel>
+
+        </Expander>
+        <TabControl FontSize="12"
+					BorderBrush="{DynamicResource BorderBrush}"
+					Background="Transparent"
+					BorderThickness="1"
+                    ItemsSource="{Binding TabItems}">
+
+        </TabControl>
+    </DockPanel>
+</hc:Window>
