@@ -13,13 +13,14 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using WpfApplication.Views;
+using DistanceLine.Views;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using TabItem = System.Windows.Controls.TabItem;
 using Window = HandyControl.Controls.Window;
+using DistanceLine.Infrastructure.PlotGlobalization;
 
 namespace DistanceLine.ViewModels.Windows
 {
@@ -78,8 +79,12 @@ namespace DistanceLine.ViewModels.Windows
         /// Главное окно.
         /// </summary>
         [DisallowNull]
-        private readonly MainWindow MainWindow;
+        public readonly MainWindow GeneralWindow;
 
+        /// <summary>
+        /// Доступные размеры шрифтов.
+        /// </summary>
+        private ObservableCollection<Shell> _fontSizes = Shell.FontSizes;
 
         #endregion
 
@@ -97,21 +102,20 @@ namespace DistanceLine.ViewModels.Windows
                 .AddTransient<InputData>(id => InputData)
                 .BuildServiceProvider();
 
-            using (var services = MainWindow.Services.BuildServiceProvider())
+
+            GeneralWindow = MainWindow.Instanse;
+
+            GeneralWindow.Closing += (sender, e) =>
             {
-                MainWindow = services.GetService<MainWindow>() ?? throw new ApplicationException("Не инициализирован MainWindow.");
-                MainWindow.Closing += (sender, e) =>
-                {
-                    var directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "InternalSave");
-                    Directory.CreateDirectory(directoryPath);
+                var directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "InternalSave");
+                Directory.CreateDirectory(directoryPath);
 
-                    var filePath = Path.Combine(directoryPath, "data.json");
+                var filePath = Path.Combine(directoryPath, "data.json");
 
-                    var jsonData = JsonConvert.SerializeObject(new SaveObject(InputData, MainWindow.FontSize, MainWindow.FontFamily, Theme.GetSkin(MainWindow)));
+                var jsonData = JsonConvert.SerializeObject(new SaveObject(InputData, GeneralWindow.FontSize, GeneralWindow.FontFamily, Theme.GetSkin(GeneralWindow)));
 
-                    File.WriteAllText(filePath, jsonData);
-                };
-            }
+                File.WriteAllText(filePath, jsonData);
+            };
 
             var directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "InternalSave");
             var filePath = Path.Combine(directoryPath, "data.json");
@@ -124,9 +128,11 @@ namespace DistanceLine.ViewModels.Windows
                 if (so is not null)
                 {
                     InputData = so.InputData;
-                    MainWindow.FontFamily = so.FontFamily;
-                    MainWindow.FontSize = so.FontSize;
-                    Theme.SetSkin(MainWindow, so.SkinType);
+                    InputData.PropertyChanged += IntutDataPropertyChanged;
+                    GeneralWindow.FontFamily = so.FontFamily;
+                    GeneralWindow.FontSize = so.FontSize;
+                    Theme.SetSkin(GeneralWindow, so.SkinType);
+                    PlotProvider.SkinType = so.SkinType;
                 }
             }
 
@@ -140,6 +146,9 @@ namespace DistanceLine.ViewModels.Windows
             OpenSettingsCommand = new RelayCommand(OnOpenSettingsCommandExecuted, CanOpenSettingsCommandExecute);
             OpenReferenceCommand = new RelayCommand(OnOpenReferenceCommandExecuted, CanOpenReferenceCommandExecute);
             ComplexCommand = new RelayCommand(OnComplexCommandExecuted, CanComplexCommandExecute);
+            EnlargeFontSize = new RelayCommand(OnEnlargeFontSizeCommandExecuted, CanEnlargeFontSizeCommandExecute);
+            ReduceFontSize = new RelayCommand(OnReduceFontSizeCommandExecuted, CanReduceFontSizeCommandExecute);
+
 
             #endregion
 
@@ -155,7 +164,6 @@ namespace DistanceLine.ViewModels.Windows
         /// </summary>
         private void InitTabControl()
         {
-            
             TabItems = new ObservableCollection<TabItem>()
             {
                 new TabItem()
@@ -163,7 +171,6 @@ namespace DistanceLine.ViewModels.Windows
                     Header = "ВОЛНОВЫЕ ПАРАМЕТРЫ",
                     Content = ViewManager.GetView<WaveParameters, WaveParametersViewModel>()
                 },
-                /*
                 new TabItem()
                 {
                     Header = "ДАННЫЕ ЧЕТЫРЁХПОЛЮСНИКА",
@@ -183,14 +190,14 @@ namespace DistanceLine.ViewModels.Windows
                 {
                     Header = "ПРОДОЛЬНАЯ КОМПЕНСАЦИЯ",
                     Content = ViewManager.GetView<LongitudinalCompensation, LongitudinalCompensationViewModel>()
-                },
+                },/*
                 new TabItem()
                 {
                     Header = "РАСПРЕДЕЛЕНИЕ НАПРЯЖЕНИЯ",
                     Content = ViewManager.GetView<VoltageDistribution, VoltageDistributionViewModel>()
                 },*/
             };
-            
+
             UpdateCommand.Execute(true);
         }
 
@@ -235,7 +242,7 @@ namespace DistanceLine.ViewModels.Windows
             return true;
         }
 
-        private async void OnComplexCommandExecuted(object p)
+        private void OnComplexCommandExecuted(object p)
         {
             ComplexConverter.IsAlgebraicConverter = !ComplexConverter.IsAlgebraicConverter;
             UpdateCommand?.Execute(this);
@@ -364,6 +371,44 @@ namespace DistanceLine.ViewModels.Windows
 
         #endregion
 
+        #region Увеличить размер шрифта
+
+        public ICommand EnlargeFontSize { get; }
+
+        private bool CanEnlargeFontSizeCommandExecute(object p)
+        {
+            return _fontSizes.Max(s => (double)(s.Value)) > GeneralWindow.FontSize;
+        }
+
+        private void OnEnlargeFontSizeCommandExecuted(object p)
+        {
+            GeneralWindow.FontSize = (double)_fontSizes
+                .Where(s => (double)s.Value > GeneralWindow.FontSize)
+                .OrderBy(s => (double)s.Value)
+                .First().Value;
+        }
+
+        #endregion
+
+        #region Увеличить размер шрифта
+
+        public ICommand ReduceFontSize { get; }
+
+        private bool CanReduceFontSizeCommandExecute(object p)
+        {
+            return _fontSizes.Min(s => (double)(s.Value)) < GeneralWindow.FontSize;
+        }
+
+        private void OnReduceFontSizeCommandExecuted(object p)
+        {
+            GeneralWindow.FontSize = (double)_fontSizes
+                .Where(s => (double)s.Value < GeneralWindow.FontSize)
+                .OrderByDescending(s => (double)s.Value)
+                .First().Value;
+        }
+
+        #endregion
+
         #region Изменить тему
 
         public ICommand ThemeChangeCommand { get; }
@@ -375,13 +420,25 @@ namespace DistanceLine.ViewModels.Windows
 
         private void OnThemeChangeCommandExecuted(object p)
         {
-            if (p is Window window)
+            switch (Theme.GetSkin(GeneralWindow))
             {
-                Theme.SetSkin(window, Theme.GetSkin(window) == HandyControl.Data.SkinType.Default ?
-                    HandyControl.Data.SkinType.Dark :
-                    HandyControl.Data.SkinType.Default);
+                case HandyControl.Data.SkinType.Default:
+                    {
+                        Theme.SetSkin(GeneralWindow, HandyControl.Data.SkinType.Dark);
+                        break;
+                    }
+                case HandyControl.Data.SkinType.Dark:
+                    {
+                        Theme.SetSkin(GeneralWindow, HandyControl.Data.SkinType.Violet);
+                        break;
+                    }
+                case HandyControl.Data.SkinType.Violet:
+                    {
+                        Theme.SetSkin(GeneralWindow, HandyControl.Data.SkinType.Default);
+                        break;
+                    }
             }
-
+            PlotProvider.SkinType = Theme.GetSkin(GeneralWindow);
         }
 
         #endregion

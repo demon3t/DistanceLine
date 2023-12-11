@@ -1,0 +1,276 @@
+﻿<UserControl x:Class="DistanceLine.Views.Reactor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DistanceLine.Views"
+             xmlns:c="clr-namespace:DistanceLine.Infrastructure"
+             xmlns:ch="clr-namespace:DistanceLine.Infrastructure.ControlHelpers"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             mc:Ignorable="d" 
+             d:DesignHeight="1500" d:DesignWidth="800">
+
+    <ScrollViewer>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <oxy:PlotView ch:AspectRatioHelper.AspectRatio="19:9"
+                              x:Name="NaturalPowerGraph"
+                              Margin="0 0 15 0"
+                              Background="Transparent"
+                              Model="{Binding NaturalPowerGraph}">
+                </oxy:PlotView>
+                <ToggleButton VerticalAlignment="Top"
+                              HorizontalAlignment="Left"
+                              Padding="-1"
+                              Margin="21 7"
+                              Style="{StaticResource ToggleButtonFlip}"
+                              ClickMode="Press"
+                              Command="{Binding ZoomEnableCommand}" CommandParameter="{Binding ElementName=NaturalPowerGraph}">
+                    <hc:StatusSwitchElement.CheckedElement>
+                        <Border Background="{DynamicResource PrimaryBrush}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Height="50" Width="50">
+                            <fa:ImageAwesome Icon="Solid_Search"
+                                             Foreground="{DynamicResource TextIconBrush}"
+                                             Height="18"/>
+                        </Border>
+                    </hc:StatusSwitchElement.CheckedElement>
+                    <Border Background="{DynamicResource AccentBrush}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="50" Width="50">
+                        <fa:ImageAwesome Icon="Solid_Search"
+                                         Foreground="{DynamicResource TextIconBrush}"
+                                         Height="18"/>
+                    </Border>
+                </ToggleButton>
+            </Grid>
+            <Grid Grid.Row="1">
+                <oxy:PlotView ch:AspectRatioHelper.AspectRatio="19:9"
+                              x:Name="WaveResistanceGraph"
+                              Margin="0 0 15 0"
+                              Background="Transparent"
+                              Model="{Binding WaveResistanceGraph}">
+                </oxy:PlotView>
+                <ToggleButton VerticalAlignment="Top"
+                              HorizontalAlignment="Left"
+                              Padding="-1"
+                              Margin="21 7"
+                              Style="{StaticResource ToggleButtonFlip}"
+                              ClickMode="Press"
+                              Command="{Binding ZoomEnableCommand}" CommandParameter="{Binding ElementName=WaveResistanceGraph}">
+                    <hc:StatusSwitchElement.CheckedElement>
+                        <Border Background="{DynamicResource PrimaryBrush}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Height="50" Width="50">
+                            <fa:ImageAwesome Icon="Solid_Search"
+                                             Foreground="{DynamicResource TextIconBrush}"
+                                             Height="18"/>
+                        </Border>
+                    </hc:StatusSwitchElement.CheckedElement>
+                    <Border Background="{DynamicResource AccentBrush}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="50" Width="50">
+                        <fa:ImageAwesome Icon="Solid_Search"
+                                         Foreground="{DynamicResource TextIconBrush}"
+                                         Height="18"/>
+                    </Border>
+                </ToggleButton>
+            </Grid>
+            <Grid Grid.Row="2">
+                <oxy:PlotView ch:AspectRatioHelper.AspectRatio="19:9"
+                              x:Name="CornerGraph"
+                              Margin="0 0 15 0"
+                              Background="Transparent"
+                              Model="{Binding CornerGraph}">
+                    </oxy:PlotView>
+                <ToggleButton VerticalAlignment="Top"
+                              HorizontalAlignment="Left"
+                              Padding="-1"
+                              Margin="21 7"
+                              Style="{StaticResource ToggleButtonFlip}"
+                              ClickMode="Press"
+                              Command="{Binding ZoomEnableCommand}" CommandParameter="{Binding ElementName=CornerGraph}">
+                    <hc:StatusSwitchElement.CheckedElement>
+                        <Border Background="{DynamicResource PrimaryBrush}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Height="50" Width="50">
+                            <fa:ImageAwesome Icon="Solid_Search"
+                                             Foreground="{DynamicResource TextIconBrush}"
+                                             Height="18"/>
+                        </Border>
+                    </hc:StatusSwitchElement.CheckedElement>
+                    <Border Background="{DynamicResource AccentBrush}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Height="50" Width="50">
+                        <fa:ImageAwesome Icon="Solid_Search"
+                                         Foreground="{DynamicResource TextIconBrush}"
+                                         Height="18"/>
+                    </Border>
+                </ToggleButton>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <oxy:PlotView ch:AspectRatioHelper.AspectRatio="19:12"
+                                  x:Name="AGraph"
+                                  Margin="0 0 15 0"
+                                  Background="Transparent"
+                                  Model="{Binding AGraph}">
+                    </oxy:PlotView>
+                    <ToggleButton VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  Padding="-1"
+                                  Margin="21 7"
+                                  Style="{StaticResource ToggleButtonFlip}"
+                                  ClickMode="Press"
+                                  Command="{Binding ZoomEnableCommand}" CommandParameter="{Binding ElementName=AGraph}">
+                        <hc:StatusSwitchElement.CheckedElement>
+                            <Border Background="{DynamicResource PrimaryBrush}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="50" Width="50">
+                                <fa:ImageAwesome Icon="Solid_Search"
+                                                 Foreground="{DynamicResource TextIconBrush}"
+                                                 Height="18"/>
+                            </Border>
+                        </hc:StatusSwitchElement.CheckedElement>
+                        <Border Background="{DynamicResource AccentBrush}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Height="50" Width="50">
+                            <fa:ImageAwesome Icon="Solid_Search"
+                                             Foreground="{DynamicResource TextIconBrush}"
+                                             Height="18"/>
+                        </Border>
+                    </ToggleButton>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <oxy:PlotView ch:AspectRatioHelper.AspectRatio="19:12"
+                                  x:Name="BGraph"
+                                  Margin="0 0 15 0"
+                                  Background="Transparent"
+                                  Model="{Binding BGraph}">
+                    </oxy:PlotView>
+                    <ToggleButton VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  Padding="-1"
+                                  Margin="21 7"
+                                  Style="{StaticResource ToggleButtonFlip}"
+                                  ClickMode="Press"
+                                  Command="{Binding ZoomEnableCommand}" CommandParameter="{Binding ElementName=BGraph}">
+                        <hc:StatusSwitchElement.CheckedElement>
+                            <Border Background="{DynamicResource PrimaryBrush}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="50" Width="50">
+                                <fa:ImageAwesome Icon="Solid_Search"
+                                                 Foreground="{DynamicResource TextIconBrush}"
+                                                 Height="18"/>
+                            </Border>
+                        </hc:StatusSwitchElement.CheckedElement>
+                        <Border Background="{DynamicResource AccentBrush}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Height="50" Width="50">
+                            <fa:ImageAwesome Icon="Solid_Search"
+                                             Foreground="{DynamicResource TextIconBrush}"
+                                             Height="18"/>
+                        </Border>
+                    </ToggleButton>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <oxy:PlotView ch:AspectRatioHelper.AspectRatio="19:12"
+                                  x:Name="CGraph"
+                                  Margin="0 0 15 0"
+                                  Background="Transparent"
+                                  Model="{Binding CGraph}">
+                    </oxy:PlotView>
+                    <ToggleButton VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  Padding="-1"
+                                  Margin="21 7"
+                                  Style="{StaticResource ToggleButtonFlip}"
+                                  ClickMode="Press"
+                                  Command="{Binding ZoomEnableCommand}" CommandParameter="{Binding ElementName=CGraph}">
+                        <hc:StatusSwitchElement.CheckedElement>
+                            <Border Background="{DynamicResource PrimaryBrush}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="50" Width="50">
+                                <fa:ImageAwesome Icon="Solid_Search"
+                                                 Foreground="{DynamicResource TextIconBrush}"
+                                                 Height="18"/>
+                            </Border>
+                        </hc:StatusSwitchElement.CheckedElement>
+                        <Border Background="{DynamicResource AccentBrush}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Height="50" Width="50">
+                            <fa:ImageAwesome Icon="Solid_Search"
+                                             Foreground="{DynamicResource TextIconBrush}"
+                                             Height="18"/>
+                        </Border>
+                    </ToggleButton>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <oxy:PlotView ch:AspectRatioHelper.AspectRatio="19:12"
+                                  x:Name="DGraph"
+                                  Margin="0 0 15 0"
+                                  Background="Transparent"
+                                  Model="{Binding DGraph}">
+                    </oxy:PlotView>
+                    <ToggleButton VerticalAlignment="Top"
+                                  HorizontalAlignment="Left"
+                                  Padding="-1"
+                                  Margin="21 7"
+                                  Style="{StaticResource ToggleButtonFlip}"
+                                  ClickMode="Press"
+                                  Command="{Binding ZoomEnableCommand}" CommandParameter="{Binding ElementName=DGraph}">
+                        <hc:StatusSwitchElement.CheckedElement>
+                            <Border Background="{DynamicResource PrimaryBrush}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Height="50" Width="50">
+                                <fa:ImageAwesome Icon="Solid_Search"
+                                                 Foreground="{DynamicResource TextIconBrush}"
+                                                 Height="18"/>
+                            </Border>
+                        </hc:StatusSwitchElement.CheckedElement>
+                        <Border Background="{DynamicResource AccentBrush}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Height="50" Width="50">
+                            <fa:ImageAwesome Icon="Solid_Search"
+                                             Foreground="{DynamicResource TextIconBrush}"
+                                             Height="18"/>
+                        </Border>
+                    </ToggleButton>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

@@ -41,7 +41,6 @@ namespace DistanceLine.Models
             set { Set(ref _inputData, value); }
         }
 
-
         private InputData _inputData;
 
         /// <summary>

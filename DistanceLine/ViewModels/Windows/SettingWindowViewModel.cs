@@ -1,5 +1,6 @@
 ﻿using DistanceLine.Infrastructure;
 using DistanceLine.Infrastructure.Base;
+using DistanceLine.Infrastructure.PlotGlobalization;
 using DistanceLine.Views.Windows;
 using HandyControl.Data;
 using HandyControl.Interactivity;
@@ -23,26 +24,31 @@ namespace DistanceLine.ViewModels.Windows
         /// </summary>
         public SettingWindowViewModel()
         {
+            #region Команды
+
             CloseCommand = new RelayCommand(OnCloseCommandExecuted, CanCloseCommandExecute);
             SaveCommand = new RelayCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             DefaultSettingsCommand = new RelayCommand(OnDefaultSettingsCommandExecuted, CanDefaultSettingsCommandExecute);
 
+            #endregion
+
+            GeneralWindow = MainWindow.Instanse;
+
             using (var services = MainWindow.Services.BuildServiceProvider())
             {
                 MainWindowViewModel = services.GetService<MainWindowViewModel>() ?? throw new ApplicationException("Не инициализирован ViewModel главного окна.");
-                MainWindow = services.GetService<MainWindow>() ?? throw new ApplicationException("Не инициализирован MainWindow.");
             }
 
             TempValues = new Dictionary<Type, object>()
             {
-                { typeof(double), MainWindow.FontSize },
-                { typeof(FontFamily), MainWindow.FontFamily },
-                { typeof(SkinType), Theme.GetSkin(MainWindow) }
+                { typeof(double), GeneralWindow.FontSize },
+                { typeof(FontFamily), GeneralWindow.FontFamily },
+                { typeof(SkinType), Theme.GetSkin(GeneralWindow) }
             };
 
-            _applicationWindowFontSize = MainWindow.FontSize;
-            _applicationWindowFontFamily = MainWindow.FontFamily;
-            _applicationWindowSkinType = Theme.GetSkin(MainWindow);
+            _applicationWindowFontSize = GeneralWindow.FontSize;
+            _applicationWindowFontFamily = GeneralWindow.FontFamily;
+            _applicationWindowSkinType = Theme.GetSkin(GeneralWindow);
         }
 
         #region Приватные свойства 
@@ -55,7 +61,7 @@ namespace DistanceLine.ViewModels.Windows
         /// <summary>
         /// Экземпляр главного окна.
         /// </summary>
-        public MainWindow MainWindow { get; }
+        public MainWindow GeneralWindow { get; }
 
         /// <summary>
         /// Временные стандартные значения.
@@ -75,11 +81,7 @@ namespace DistanceLine.ViewModels.Windows
             set
             {
                 Set(ref _applicationWindowFontSize, value);
-                MainWindow.FontSize = value;
-                foreach (var tabItem in MainWindowViewModel.TabItems)
-                {
-                    tabItem.FontSize = value;
-                }
+                GeneralWindow.FontSize = value;
             }
         }
 
@@ -94,11 +96,7 @@ namespace DistanceLine.ViewModels.Windows
             set
             {
                 Set(ref _applicationWindowFontFamily, value);
-                MainWindow.FontFamily = value;
-                foreach (var tabItem in MainWindowViewModel.TabItems)
-                {
-                    tabItem.FontFamily = value;
-                }
+                GeneralWindow.FontFamily = value;
             }
         }
 
@@ -113,8 +111,8 @@ namespace DistanceLine.ViewModels.Windows
             set
             {
                 Set(ref _applicationWindowSkinType, value);
-                Theme.SetSkin(MainWindow, value);
-                PlotManager.SkinType = value;
+                Theme.SetSkin(GeneralWindow, value);
+                PlotProvider.SkinType = value;
             }
         }
 

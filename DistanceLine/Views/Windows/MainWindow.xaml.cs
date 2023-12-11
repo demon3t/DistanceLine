@@ -9,6 +9,8 @@ namespace DistanceLine.Views.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow Instanse { get; private set; }
+
         /// <summary>
         /// Зависимости.
         /// </summary>
@@ -16,10 +18,10 @@ namespace DistanceLine.Views.Windows
 
         public MainWindow()
         {
+            Instanse = Instanse is null ? this : Instanse;
+
             Services.AddTransient<MainWindow>(sp => this)
                 .BuildServiceProvider();
-
-            PlotManager.MainWindow = this;
 
             InitializeComponent();
         }

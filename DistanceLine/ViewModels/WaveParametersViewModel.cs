@@ -34,7 +34,7 @@ namespace DistanceLine.ViewModels
         /// </summary>
         public WaveParametersViewModel() : base()
         {
-            _viewItems = new ObservableCollection<DataShell>();
+            ViewItems = new ObservableCollection<DataShell>();
         }
 
         /// <summary>

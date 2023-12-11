@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="WpfApplication.Views.WaveParameters"
+﻿<UserControl x:Class="DistanceLine.Views.WaveParameters"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WpfApplication.Views"
+             xmlns:local="clr-namespace:DistanceLine.Views"
              xmlns:dc="clr-namespace:DistanceLine.ViewModels"
              xmlns:c="clr-namespace:DistanceLine.Infrastructure.Converters"
              mc:Ignorable="d" 
@@ -17,8 +17,7 @@
         <c:ComplexConverter x:Key="Converter"/>
     </UserControl.Resources>
     
-    <DataGrid Style="{StaticResource DataGridBaseStyle}"
-              ItemsSource="{Binding ViewItems}"
+    <DataGrid ItemsSource="{Binding ViewItems}"
               AutoGenerateColumns="False"
               CanUserReorderColumns="False"
               CanUserSortColumns="True"

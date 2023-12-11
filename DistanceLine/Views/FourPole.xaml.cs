@@ -3,11 +3,11 @@
 namespace DistanceLine.Views
 {
     /// <summary>
-    /// Interaction logic for WaveParameters.xaml
+    /// Interaction logic for FourPole.xaml
     /// </summary>
-    public partial class WaveParameters : UserControl
+    public partial class FourPole : UserControl
     {
-        public WaveParameters()
+        public FourPole()
         {
             InitializeComponent();
         }

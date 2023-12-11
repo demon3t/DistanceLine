@@ -6,10 +6,13 @@
 		   xmlns:hc="https://handyorg.github.io/handycontrol"
 		   xmlns:fa="http://schemas.fontawesome.com/icons/"
 		   xmlns:dc="clr-namespace:DistanceLine.ViewModels.Windows"
+           xmlns:i="clr-namespace:DistanceLine.Infrastructure"
            xmlns:local="clr-namespace:DistanceLine"
            mc:Ignorable="d"
            Title="Distance-Line" Height="450" Width="800">
     <hc:Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="Add" Command="{Binding EnlargeFontSize}"/>
+        <KeyBinding Modifiers="Ctrl" Key="Subtract" Command="{Binding ReduceFontSize}"/>
         <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenFileCommand}"/>
         <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SafeFileCommand}"/>
         <KeyBinding Modifiers="Shift" Key="S" Command="{Binding SafeFileAsCommand}"/>
@@ -114,8 +117,6 @@
 				  TextBlock.TextAlignment="Center"
 				  HorizontalContentAlignment="Right"
 				  Style="{StaticResource Expander.Small}"
-				  Background="{DynamicResource SecondaryRegionBrush}"
-				  Foreground="{DynamicResource DarkPrimaryBrush}"
 				  ExpandDirection="Left"
 				  VerticalAlignment="Stretch"
 				  IsExpanded="True">
@@ -125,6 +126,7 @@
                 <Label Background="{DynamicResource PrimaryBrush}"
 					   Foreground="{DynamicResource TextIconBrush}"
 					   HorizontalAlignment="Stretch"
+                       Height="Auto"
                        Content="Исходные данные"/>
 
                 <Border Style="{StaticResource Border_Two}">
@@ -284,8 +286,7 @@
             </StackPanel>
 
         </Expander>
-        <TabControl FontSize="12"
-					BorderBrush="{DynamicResource BorderBrush}"
+        <TabControl BorderBrush="{DynamicResource BorderBrush}"
 					Background="Transparent"
 					BorderThickness="1"
                     ItemsSource="{Binding TabItems}">

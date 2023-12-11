@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="DistanceLine.Views.CorrectionFactor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DistanceLine.Views"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:dc="clr-namespace:DistanceLine.ViewModels"
+             xmlns:c="clr-namespace:DistanceLine.Infrastructure.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <dc:CorrectionFactorViewModel/>
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <c:ComplexConverter x:Key="Converter"/>
+    </UserControl.Resources>
+    
+    <hc:ScrollViewer>
+        <StackPanel>
+            <Label Content="До отключения реактора"
+                   Background="{DynamicResource PrimaryBrush}"
+                   Foreground="{DynamicResource TextIconBrush}"
+                   Height="Auto"
+                   HorizontalAlignment="Stretch"/>
+            <DataGrid Style="{StaticResource DataGridBaseStyle}"
+                  ItemsSource="{Binding ViewItemsBefore}"
+                  AutoGenerateColumns="False"
+                  CanUserReorderColumns="False"
+                  CanUserSortColumns="True"
+                  CanUserAddRows="False"
+                  CanUserResizeColumns="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Поправочный коэффициент"
+                                        Binding="{Binding Header}"
+                                        Width="2*"
+                                        IsReadOnly="True"
+                                        CanUserSort="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Значение"
+                                        Binding="{Binding ValueOne, Converter={StaticResource ResourceKey=Converter}}"
+                                        Width="*"
+                                        IsReadOnly="True"
+                                        CanUserSort="False"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Label Content="После отключения реактора"
+               Background="{DynamicResource PrimaryBrush}"
+               Foreground="{DynamicResource TextIconBrush}"
+               HorizontalAlignment="Stretch"
+               Height="Auto"/>
+            <DataGrid Style="{StaticResource DataGridBaseStyle}"
+                  ItemsSource="{Binding ViewItemsAfter}"
+                  AutoGenerateColumns="False"
+                  CanUserReorderColumns="False"
+                  CanUserSortColumns="True"
+                  CanUserAddRows="False"
+                  CanUserResizeColumns="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Поправочный коэффициент"
+                                        Binding="{Binding Header}"
+                                        Width="2*"
+                                        IsReadOnly="True"
+                                        CanUserSort="False">
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Значение"
+                                        Binding="{Binding ValueOne, Converter={StaticResource ResourceKey=Converter}}"
+                                        Width="*"
+                                        IsReadOnly="True"
+                                        CanUserSort="False"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
+    </hc:ScrollViewer>
+</UserControl>

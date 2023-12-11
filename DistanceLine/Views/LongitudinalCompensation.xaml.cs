@@ -3,11 +3,11 @@
 namespace DistanceLine.Views
 {
     /// <summary>
-    /// Interaction logic for WaveParameters.xaml
+    /// Interaction logic for LongitudinalCompensation.xaml
     /// </summary>
-    public partial class WaveParameters : UserControl
+    public partial class LongitudinalCompensation : UserControl
     {
-        public WaveParameters()
+        public LongitudinalCompensation()
         {
             InitializeComponent();
         }

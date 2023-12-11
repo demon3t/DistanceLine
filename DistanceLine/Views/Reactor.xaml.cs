@@ -3,11 +3,11 @@
 namespace DistanceLine.Views
 {
     /// <summary>
-    /// Interaction logic for WaveParameters.xaml
+    /// Interaction logic for Reactor.xaml
     /// </summary>
-    public partial class WaveParameters : UserControl
+    public partial class Reactor : UserControl
     {
-        public WaveParameters()
+        public Reactor()
         {
             InitializeComponent();
         }

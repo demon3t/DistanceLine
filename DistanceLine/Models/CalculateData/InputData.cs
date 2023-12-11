@@ -270,7 +270,7 @@ namespace DistanceLine.Models.CalculateData
         /// Сопротивление одиночного провода [X0_single].
         /// </summary>
         internal double ResistanceWire_Single =>
-            0.144 * Math.Log10(MeanDistanceBetweenPhaseWires_Single * 1000 / RadiusWire_Single + 0.0157);
+            0.144 * Math.Log10(MeanDistanceBetweenPhaseWires_Single * 1000 / RadiusWire_Single) + 0.0157;
 
         /// <summary>
         /// Емкостная проводимость одиночного провода [B0_single].
@@ -334,25 +334,25 @@ namespace DistanceLine.Models.CalculateData
         /// Средне-геометрическое расстояние между проводами фаз расщеплённого провода [Dsr_].
         /// </summary>
         internal double MeanDistanceBetweenPhaseWires =>
-            double.NaN;
+            Math.Pow(2, 1 / (double)3) * DistanceBetweenPhases;
 
         /// <summary>
         /// Радиус расщеплённого провода [R_eq].
         /// </summary>
         internal double RadiusWire =>
-            Math.Pow((double)DiameterWire / 20 * (double)DistanceBetweenSplitWires * (double)DistanceBetweenSplitWires, 1.0 / 3.0);
+            Math.Pow((double)DiameterWire / 2 * ((double)DistanceBetweenSplitWires * (double)DistanceBetweenSplitWires) * 100, 1.0 / 3.0);
 
         /// <summary>
         /// Сопротивление расщеплённого провода [X0].
         /// </summary>
         internal double ResistanceWire =>
-             0.144 * Math.Log10(MeanDistanceBetweenPhaseWires_Single * 100 / RadiusWire) + 0.0157 / NumberSplitWires;
+             0.144 * Math.Log10(MeanDistanceBetweenPhaseWires_Single * 1000 / RadiusWire) + 0.0157 / NumberSplitWires;
 
         /// <summary>
         /// Емкостная проводимость расщеплённого провода [B0].
         /// </summary>
         internal double CapacitiveConductivityWire =>
-            7.58 / Math.Log10(MeanDistanceBetweenPhaseWires_Single * 100 / RadiusWire) * Math.Pow(10, -6);
+            7.58 / Math.Log10(MeanDistanceBetweenPhaseWires_Single * 1000 / RadiusWire) * Math.Pow(10, -6);
 
         /// <summary>
         /// Комплексное сопротивление расщеплённого провода [Z0].

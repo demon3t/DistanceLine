@@ -9,6 +9,9 @@
              mc:Ignorable="d" x:Name="UserControl"
              hc:Dialog.Token="DialogContainer"
              Height="Auto" Width="500"
+             FontFamily="{Binding GeneralWindow.FontFamily}"
+             FontSize="{Binding GeneralWindow.FontSize}"
+             Background="{Binding GeneralWindow.Background}"
              hc:Dialog.MaskCanClose="True">
 
     <UserControl.DataContext>
@@ -40,8 +43,7 @@
 
     <hc:DialogContainer>
 
-        <Border CornerRadius="5"
-                Background="{Binding MainWindow.Background}">
+        <Border CornerRadius="5">
 
             <StackPanel Margin="5"
                         Orientation="Vertical">
