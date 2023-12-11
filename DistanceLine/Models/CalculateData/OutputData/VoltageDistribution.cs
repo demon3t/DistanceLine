@@ -56,17 +56,21 @@ namespace DistanceLine.Models.CalculateData.OutputData
             {
                 var P2 = _inputData.K2 * _inputData.NaturalPower;
 
-                var _Q2 = -Ctg(new Complex(_inputData.PhaseCoefficient, 0) * new Complex(_inputData.LineLength, 0)) +
-                Sqrt(1 / Pow(Sin(new Complex(_inputData.PhaseCoefficient, 0) * new Complex(_inputData.LineLength, 0)), 2) -
-                Pow(new Complex(_inputData.K2, 0), 2));
+                var _Q2 = -Ctg(_inputData.PhaseCoefficient * _inputData.LineLength) +
+                    Math.Sqrt(1 / Math.Pow(Math.Sin(_inputData.PhaseCoefficient * _inputData.LineLength), 2) - Math.Pow(_inputData.K2, 2));
 
-                var Q2 = _Q2.Magnitude;
+                if (1 / Math.Pow(Math.Sin(_inputData.PhaseCoefficient * _inputData.LineLength), 2) - Math.Pow(_inputData.K2, 2) < 0)
+                {
+                    _Q2 = -Ctg(_inputData.PhaseCoefficient * _inputData.LineLength);
+                }
 
-                var rad = Math.Atan((_Q2 * _inputData.NaturalPower).Magnitude / (_inputData.K2 * _inputData.NaturalPower));
+                var Q2 = _Q2 * _inputData.NaturalPower;
+
+                var rad = Math.Atan(Q2 / P2);
 
                 return new Complex(
-                           Math.Sqrt(Math.Pow(P2, 2) + Math.Pow(Q2, 2)) / _inputData.NominalVoltage * Math.Cos(rad),
-                           Math.Sqrt(Math.Pow(P2, 2) + Math.Pow(Q2, 2)) / _inputData.NominalVoltage * Math.Sin(rad));
+                    Math.Sqrt(Math.Pow(P2, 2) + Math.Pow(Q2, 2)) / _inputData.NominalVoltage * Math.Cos(-rad),
+                    Math.Sqrt(Math.Pow(P2, 2) + Math.Pow(Q2, 2)) / _inputData.NominalVoltage * Math.Sin(-rad));
             }
         }
 
@@ -79,9 +83,8 @@ namespace DistanceLine.Models.CalculateData.OutputData
             {
                 var P2 = _inputData.K1 * _inputData.NaturalPower;
 
-                var _Q2 = Ctg(_inputData.PhaseCoefficient * _inputData.LineLength) +
-                    Math.Sqrt(1 / Math.Pow(Math.Sin(_inputData.PhaseCoefficient * _inputData.LineLength), 2) -
-                    Math.Pow(_inputData.K1, 2));
+                var _Q2 = -Ctg(_inputData.PhaseCoefficient * _inputData.LineLength) +
+                    Math.Sqrt(1 / Math.Pow(Math.Sin(_inputData.PhaseCoefficient * _inputData.LineLength), 2) - Math.Pow(_inputData.K1, 2));
 
                 var Q2 = _Q2 * _inputData.NaturalPower;
 
@@ -124,15 +127,6 @@ namespace DistanceLine.Models.CalculateData.OutputData
         #region Напряжение при мощности больше натуральной
 
         /// <summary>
-        /// Напряжение при мощности больше натуральной.
-        /// </summary>
-        /// <param name="l">Расстояние от начала линии.</param>
-        /// <returns>Напряжение.</returns>
-        public double GetVoltage_MoreNaturalPower(double l) => (Math.Cos(_inputData.PhaseCoefficient * (_inputData.LineLength - l)) *
-            _inputData.NominalVoltage + _inputData.WaveResistanceLine.Magnitude * ImaginaryOne * Math.Sin(_inputData.PhaseCoefficient *
-                (_inputData.LineLength - l)) * I2_more).Magnitude;
-
-        /// <summary>
         /// Получить распределение напряжения вдоль линии при мощности больше натуральной.
         /// </summary>
         /// <returns>
@@ -145,11 +139,11 @@ namespace DistanceLine.Models.CalculateData.OutputData
             Complex i2 = I2_more;
             double z = _inputData.WaveResistanceLine.Magnitude;
 
-            for (var i = 0d; i <= _inputData.LineLength + 1; i++)
+            for (var i = 0d; i <= _inputData.LineLength; i++)
             {
                 yield return (i,
-                    (Math.Cos(beta * (_inputData.LineLength - i)) * _inputData.NominalVoltage +
-                z * ImaginaryOne * Math.Sin(beta * (_inputData.LineLength - i)) * i2).Magnitude);
+                    (Math.Cos(_inputData.PhaseCoefficient * (_inputData.LineLength - i)) * _inputData.NominalVoltage +
+                z * ImaginaryOne * Math.Sin(_inputData.PhaseCoefficient * (_inputData.LineLength - i)) * i2).Magnitude );
             }
 
             yield break;
@@ -183,11 +177,11 @@ namespace DistanceLine.Models.CalculateData.OutputData
             Complex i2 = I2_less;
             double z = _inputData.WaveResistanceLine.Magnitude;
 
-            for (var i = 0d; i <= _inputData.LineLength + 1; i++)
+            for (var i = 0d; i <= _inputData.LineLength; i++)
             {
                 yield return (i,
-                    (Math.Cos(beta * (_inputData.LineLength - i)) * _inputData.NominalVoltage +
-                z * Complex.ImaginaryOne * Math.Sin(beta * (_inputData.LineLength - i)) * i2).Magnitude);
+                    (Math.Cos(_inputData.PhaseCoefficient * (_inputData.LineLength - i)) * _inputData.NominalVoltage +
+                z * ImaginaryOne * Math.Sin(_inputData.PhaseCoefficient * (_inputData.LineLength - i)) * i2).Magnitude);
             }
 
             yield break;
@@ -196,22 +190,6 @@ namespace DistanceLine.Models.CalculateData.OutputData
         #endregion
 
         #region Напряжение при одностороннем включении
-
-        /// <summary>
-        /// Напряжение при одностороннем включении.
-        /// </summary>
-        /// <param name="l">Расстояние от начала линии.</param>
-        /// <returns>Напряжение.</returns>
-        public double GetVoltage_OneSided(double l)
-        {
-            var beta = _inputData.WavePropagationCoefficient.Magnitude * Math.Sin(_inputData.WavePropagationCoefficient.Phase);
-            var a = (Complex)Math.Cos(beta * _inputData.LineLength);
-            var b = _inputData.WaveResistanceLine.Magnitude * Math.Sin(beta * _inputData.LineLength) * ImaginaryOne;
-            var i2 = I2_more;
-
-            return Math.Cos(beta * (_inputData.LineLength - l)) *
-                ((a * _inputData.NominalVoltage + b * I2_more).Magnitude / a.Magnitude);
-        }
 
         /// <summary>
         /// Получить распределение напряжения вдоль линии при одностороннем включении.
@@ -227,11 +205,11 @@ namespace DistanceLine.Models.CalculateData.OutputData
             var b = _inputData.WaveResistanceLine.Magnitude * Math.Sin(beta * _inputData.LineLength) * ImaginaryOne;
             var i2 = I2_more;
 
-            for (var i = 0d; i <= _inputData.LineLength + 1; i++)
+            for (var i = 0d; i <= _inputData.LineLength; i++)
             {
                 yield return (i, 
                     Math.Cos(beta * (_inputData.LineLength - i)) *
-                ((a * _inputData.NominalVoltage + b * I2_more).Magnitude / a.Magnitude));
+                ((a * _inputData.NominalVoltage + b * i2).Magnitude / a.Magnitude));
             }
 
             yield break;

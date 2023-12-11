@@ -11,12 +11,12 @@
            mc:Ignorable="d"
            Title="Distance-Line" Height="450" Width="800">
     <hc:Window.InputBindings>
-        <KeyBinding Modifiers="Ctrl" Key="Add" Command="{Binding EnlargeFontSize}"/>
-        <KeyBinding Modifiers="Ctrl" Key="Subtract" Command="{Binding ReduceFontSize}"/>
+        <KeyBinding Key="Oem6" Command="{Binding EnlargeFontSize}"/>
+        <KeyBinding Key="Oem4" Command="{Binding ReduceFontSize}"/>
         <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenFileCommand}"/>
         <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SafeFileCommand}"/>
         <KeyBinding Modifiers="Shift" Key="S" Command="{Binding SafeFileAsCommand}"/>
-        <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding ComplexCommand}"/>
+        <KeyBinding Key="F4" Command="{Binding ComplexCommand}"/>
         <KeyBinding Key="F5" Command="{Binding UpdateCommand}"/>
         <KeyBinding Key="F10" Command="{Binding ThemeChangeCommand}"/>
     </hc:Window.InputBindings>
@@ -152,7 +152,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.LineLength}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Maximum="12000"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>

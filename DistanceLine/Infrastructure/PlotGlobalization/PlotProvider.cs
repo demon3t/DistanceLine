@@ -1,5 +1,6 @@
 ﻿using DistanceLine.Views.Windows;
 using HandyControl.Data;
+using HandyControl.Themes;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -54,7 +55,7 @@ namespace DistanceLine.Infrastructure.PlotGlobalization
             }
         }
 
-        private static SkinType _skinType;
+        private static SkinType _skinType = Theme.GetSkin(MainWindow.Instanse);
 
         #endregion
 
@@ -62,9 +63,14 @@ namespace DistanceLine.Infrastructure.PlotGlobalization
 
         public static FontFamily FontFamily
         {
-            get { return _mainWindow.FontFamily; }
+            get { return _fontFamily; }
+            set
+            {
+                _fontFamily = value;
+                OnPlotFontFamilyChanced();
+            }
         }
-
+        private static FontFamily _fontFamily = MainWindow.Instanse.FontFamily;
 
         #endregion
 
@@ -72,14 +78,21 @@ namespace DistanceLine.Infrastructure.PlotGlobalization
 
         public static double FontSize
         {
-            get { return _mainWindow.FontSize; }
+            get { return _fontSize; }
+            set
+            {
+                _fontSize = value;
+                OnPlotFontSizeChanced();
+            }
         }
+
+        public static double _fontSize = MainWindow.Instanse.FontSize;
 
 
         #endregion
 
 
-        private static void OnPlotFontFamilyChanced(object? sender, EventArgs e)
+        private static void OnPlotFontFamilyChanced()
         {
             Parallel.ForEach(_plotModels, pm =>
             {
@@ -95,7 +108,7 @@ namespace DistanceLine.Infrastructure.PlotGlobalization
             });
         }
 
-        private static void OnPlotFontSizeChanced(object? sender, EventArgs e)
+        private static void OnPlotFontSizeChanced()
         {
             Parallel.ForEach(_plotModels, pm =>
             {
@@ -161,8 +174,12 @@ namespace DistanceLine.Infrastructure.PlotGlobalization
 
         private static PlotModel CreatePlotModel(PlotOption plotOption)
         {
-            var plot = new PlotModel();
-
+            var plot = new PlotModel()
+            {
+                DefaultFont = FontFamily.ToCode(),
+                TitleFontSize = FontSize,
+                SubtitleFontSize = FontSize,
+            };
             plot.Title = plotOption.Title;
             plot.PlotAreaBorderColor = plotOption.PlotAreaBorderColor;
             plot.TextColor = plotOption.TextColor;
@@ -184,6 +201,7 @@ namespace DistanceLine.Infrastructure.PlotGlobalization
             axis.MajorGridlineStyle = axisOption.MajorGridlineStyle;
             axis.MajorGridlineColor = axisOption.MajorGridlineColor;
             axis.MinimumMajorStep = axisOption.MinimumMajorStep;
+            axis.FontSize = FontSize * 0.75;
 
             return axis;
         }

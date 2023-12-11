@@ -83,6 +83,11 @@ namespace DistanceLine.Models.CalculateData
         /// </summary>
         public VoltageDistribution VoltageDistribution { get { return new(this); } }
 
+        /// <summary>
+        /// Поддержание напряжения.
+        /// </summary>
+        public VoltageMaintenance VoltageMaintenance { get { return new(this); } }
+
         #region Свойства
 
         #region Номинальное напряжение [VoltNom]

@@ -111,8 +111,7 @@ namespace DistanceLine.ViewModels.Windows
             set
             {
                 Set(ref _applicationWindowSkinType, value);
-                Theme.SetSkin(GeneralWindow, value);
-                PlotProvider.SkinType = value;
+                GlobalSetting.SetTheme(value);
             }
         }
 

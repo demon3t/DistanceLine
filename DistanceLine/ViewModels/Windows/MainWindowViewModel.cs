@@ -1,8 +1,10 @@
 ﻿using DistanceLine.Infrastructure;
 using DistanceLine.Infrastructure.Base;
 using DistanceLine.Infrastructure.Converters;
+using DistanceLine.Infrastructure.PlotGlobalization;
 using DistanceLine.Models;
 using DistanceLine.Models.CalculateData;
+using DistanceLine.Views;
 using DistanceLine.Views.Windows;
 using HandyControl.Controls;
 using HandyControl.Themes;
@@ -16,11 +18,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
-using DistanceLine.Views;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using TabItem = System.Windows.Controls.TabItem;
-using Window = HandyControl.Controls.Window;
-using DistanceLine.Infrastructure.PlotGlobalization;
 
 namespace DistanceLine.ViewModels.Windows
 {
@@ -190,12 +189,17 @@ namespace DistanceLine.ViewModels.Windows
                 {
                     Header = "ПРОДОЛЬНАЯ КОМПЕНСАЦИЯ",
                     Content = ViewManager.GetView<LongitudinalCompensation, LongitudinalCompensationViewModel>()
-                },/*
+                },
                 new TabItem()
                 {
                     Header = "РАСПРЕДЕЛЕНИЕ НАПРЯЖЕНИЯ",
                     Content = ViewManager.GetView<VoltageDistribution, VoltageDistributionViewModel>()
-                },*/
+                },
+                new TabItem()
+                {
+                    Header = "ПОДДЕРЖАНИЕ НАПРЯЖЕНИЯ",
+                    Content = ViewManager.GetView<VoltageMaintenance, VoltageMaintenanceViewModel>()
+                },
             };
 
             UpdateCommand.Execute(true);
@@ -382,10 +386,12 @@ namespace DistanceLine.ViewModels.Windows
 
         private void OnEnlargeFontSizeCommandExecuted(object p)
         {
-            GeneralWindow.FontSize = (double)_fontSizes
+            var fontSize = (double)_fontSizes
                 .Where(s => (double)s.Value > GeneralWindow.FontSize)
                 .OrderBy(s => (double)s.Value)
                 .First().Value;
+
+            GlobalSetting.SetFontSize(fontSize);
         }
 
         #endregion
@@ -401,10 +407,12 @@ namespace DistanceLine.ViewModels.Windows
 
         private void OnReduceFontSizeCommandExecuted(object p)
         {
-            GeneralWindow.FontSize = (double)_fontSizes
+            var fontSize = (double)_fontSizes
                 .Where(s => (double)s.Value < GeneralWindow.FontSize)
                 .OrderByDescending(s => (double)s.Value)
                 .First().Value;
+
+            GlobalSetting.SetFontSize(fontSize);
         }
 
         #endregion
@@ -424,21 +432,20 @@ namespace DistanceLine.ViewModels.Windows
             {
                 case HandyControl.Data.SkinType.Default:
                     {
-                        Theme.SetSkin(GeneralWindow, HandyControl.Data.SkinType.Dark);
+                        GlobalSetting.SetTheme(HandyControl.Data.SkinType.Dark);
                         break;
                     }
                 case HandyControl.Data.SkinType.Dark:
                     {
-                        Theme.SetSkin(GeneralWindow, HandyControl.Data.SkinType.Violet);
+                        GlobalSetting.SetTheme(HandyControl.Data.SkinType.Violet);
                         break;
                     }
                 case HandyControl.Data.SkinType.Violet:
                     {
-                        Theme.SetSkin(GeneralWindow, HandyControl.Data.SkinType.Default);
+                        GlobalSetting.SetTheme(HandyControl.Data.SkinType.Default);
                         break;
                     }
             }
-            PlotProvider.SkinType = Theme.GetSkin(GeneralWindow);
         }
 
         #endregion
