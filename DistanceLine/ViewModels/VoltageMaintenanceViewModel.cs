@@ -60,6 +60,7 @@ namespace DistanceLine.ViewModels
                         LineStyle = LineStyle.Solid,
                         BrokenLineThickness = 3,
                         RenderInLegend = false,
+                        Title = "Q₁=ƒ(P₂)",
                     },
                     new LineSeries
                     {
@@ -68,6 +69,7 @@ namespace DistanceLine.ViewModels
                         LineStyle = LineStyle.Solid,
                         BrokenLineThickness = 3,
                         RenderInLegend = false,
+                        Title = "Q₁=ƒ(P₁)",
                     },
                     new LineSeries
                     {
@@ -76,6 +78,7 @@ namespace DistanceLine.ViewModels
                         LineStyle = LineStyle.Solid,
                         BrokenLineThickness = 3,
                         RenderInLegend = false,
+                        Title = "Q₂=ƒ(P₂)",
                     },
                     new LineSeries
                     {
@@ -84,6 +87,7 @@ namespace DistanceLine.ViewModels
                         LineStyle = LineStyle.Solid,
                         BrokenLineThickness = 3,
                         RenderInLegend = false,
+                        Title = "Q₂=ƒ(P₁)",
                     }
                 });
         }

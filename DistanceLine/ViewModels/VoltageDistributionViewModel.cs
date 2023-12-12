@@ -49,37 +49,41 @@ namespace DistanceLine.ViewModels
                 },
                 new Series[]
                 {
-                    new LineSeries
+                    new LineSeries()
                     {
                         MarkerType = MarkerType.None,
                         Color = OxyColors.Blue,
                         LineStyle = LineStyle.Solid,
                         BrokenLineThickness = 3,
                         RenderInLegend = true,
+                        Title = "Одностороннее включение",
                     },
-                    new LineSeries
+                    new LineSeries()
                     {
                         MarkerType = MarkerType.None,
                         Color = OxyColors.Red,
                         LineStyle = LineStyle.Solid,
                         BrokenLineThickness = 3,
                         RenderInLegend = true,
+                        Title = "Мощность меньше натуральной",
                     },
-                    new LineSeries
+                    new LineSeries()
                     {
                         MarkerType = MarkerType.None,
                         Color = OxyColors.DarkOrange,
                         LineStyle = LineStyle.Solid,
                         BrokenLineThickness = 3,
                         RenderInLegend = true,
+                        Title = "Натуральная мощность",
                     },
-                    new LineSeries
+                    new LineSeries()
                     {
                         MarkerType = MarkerType.None,
                         Color = OxyColors.Green,
                         LineStyle = LineStyle.Solid,
                         BrokenLineThickness = 3,
                         RenderInLegend = true,
+                        Title = "Мощность больше натуральной",
                     }
                 });
         }

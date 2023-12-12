@@ -11,14 +11,14 @@
            mc:Ignorable="d"
            Title="Distance-Line" Height="450" Width="800">
     <hc:Window.InputBindings>
-        <KeyBinding Key="Oem6" Command="{Binding EnlargeFontSize}"/>
-        <KeyBinding Key="Oem4" Command="{Binding ReduceFontSize}"/>
         <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenFileCommand}"/>
         <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SafeFileCommand}"/>
         <KeyBinding Modifiers="Shift" Key="S" Command="{Binding SafeFileAsCommand}"/>
         <KeyBinding Key="F4" Command="{Binding ComplexCommand}"/>
         <KeyBinding Key="F5" Command="{Binding UpdateCommand}"/>
         <KeyBinding Key="F10" Command="{Binding ThemeChangeCommand}"/>
+        <KeyBinding Key="Oem6" Command="{Binding EnlargeFontSize}"/>
+        <KeyBinding Key="Oem4" Command="{Binding ReduceFontSize}"/>
     </hc:Window.InputBindings>
 
     <hc:Window.NonClientAreaContent>
@@ -138,7 +138,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.NominalVoltage}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Maximum="5000" Increment="0.5"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>
@@ -152,7 +153,7 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.LineLength}"
-										  Minimum="0" Maximum="12000"
+										  Minimum="0" Maximum="12000" Increment="0.5"
                                           HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
@@ -167,7 +168,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.NumberSplitWires}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Maximum="1000" Increment="1"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>
@@ -181,7 +183,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.SteelSection}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Increment="1"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>
@@ -195,7 +198,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.AluminumSection}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Increment="1"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>
@@ -209,7 +213,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.DiameterWire}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Increment="0.5"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>
@@ -223,7 +228,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.ActiveResistance}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Increment="0.05"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>
@@ -237,7 +243,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.DistanceBetweenPhases}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Increment="0.5"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>
@@ -251,7 +258,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.DistanceBetweenSplitWires}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Increment="0.5"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>
@@ -265,7 +273,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.K1}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="0" Maximum="1" Increment="0.01"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>
@@ -279,7 +288,8 @@
 
                         <hc:NumericUpDown Style="{StaticResource NumericUpDown.Small}"
 										  Width="100" Value="{Binding InputData.K2}"
-										  Minimum="0" HorizontalAlignment="Right"
+										  Minimum="1" Maximum="100" Increment="0.01"
+                                          HorizontalAlignment="Right"
 										  DecimalPlaces="5" ValueFormat="G9"/>
                     </DockPanel>
                 </Border>

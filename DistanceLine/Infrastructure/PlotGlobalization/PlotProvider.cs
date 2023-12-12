@@ -41,6 +41,9 @@ namespace DistanceLine.Infrastructure.PlotGlobalization
         internal static OxyColor SeriesColor => SkinType == SkinType.Dark ? OxyColors.White :
                 SkinType == SkinType.Violet ? OxyColor.FromArgb(255, 122, 31, 163) : OxyColor.FromArgb(255, 50, 109, 242);
 
+        internal static OxyColor PlotAreaBackground => SkinType == SkinType.Dark ? OxyColor.FromArgb(255, 72, 72, 75) :
+                SkinType == SkinType.Violet ? OxyColors.White : OxyColors.White;
+
         #endregion
 
         #region Стиль
@@ -130,6 +133,7 @@ namespace DistanceLine.Infrastructure.PlotGlobalization
             {
                 pm.TextColor = TextColor;
                 pm.PlotAreaBorderColor = PlotAreaBorderColor;
+                pm.PlotAreaBackground = PlotAreaBackground;
 
                 Parallel.ForEach(pm.Axes, ax =>
                 {
@@ -179,6 +183,8 @@ namespace DistanceLine.Infrastructure.PlotGlobalization
                 DefaultFont = FontFamily.ToCode(),
                 TitleFontSize = FontSize,
                 SubtitleFontSize = FontSize,
+                IsLegendVisible = true,
+                PlotAreaBackground = PlotAreaBackground,
             };
             plot.Title = plotOption.Title;
             plot.PlotAreaBorderColor = plotOption.PlotAreaBorderColor;
